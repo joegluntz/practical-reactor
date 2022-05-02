@@ -40,7 +40,7 @@ public class c6_CombiningPublishers extends CombiningPublishersBase {
         //todo: feel free to change code as you need
         Mono<String> currentUserEmail = null;
         Mono<String> currentUserMono = getCurrentUser();
-        getUserEmail(null);
+        currentUserEmail = currentUserMono.flatMap(s -> getUserEmail(s));
 
         //don't change below this line
         StepVerifier.create(currentUserEmail)
