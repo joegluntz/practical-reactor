@@ -258,21 +258,28 @@ public class c5_CreatingSequence {
     @Test
     public void generate_programmatically() {
 
-        Flux<Integer> generateFlux = Flux.generate(sink -> {
-
-            //todo: fix following code so it emits values from 0 to 5 and then completes
+        Flux<Integer> generateFlux = Flux.generate(() -> 1, (state, sink) -> {
+            sink.next(state);
+            if (state == 5) sink.complete();
+            return state + 1;
         });
 
         //------------------------------------------------------
 
         Flux<Integer> createFlux = Flux.create(sink -> {
-            //todo: fix following code so it emits values from 0 to 5 and then completes
+            for (int i = 1; i < 6; i++) {
+                sink.next(i);
+            }
+            sink.complete();
         });
 
         //------------------------------------------------------
 
         Flux<Integer> pushFlux = Flux.push(sink -> {
-            //todo: fix following code so it emits values from 0 to 5 and then completes
+            for (int i = 1; i < 6; i++) {
+                sink.next(i);
+            }
+            sink.complete();
         });
 
         StepVerifier.create(generateFlux)
